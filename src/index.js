@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Keyboard, Modal, Platform, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
-import { Picker } from '@react-native-community/picker';
+import { Picker } from '@react-native-picker/picker';
 import { defaultStyles } from './styles';
 
 export default class RNPickerSelect extends PureComponent {
@@ -642,7 +642,7 @@ export default class RNPickerSelect extends PureComponent {
 
     renderAndroidHeadless() {
         const { disabled, Icon, style, pickerProps, onOpen, touchableWrapperProps } = this.props;
-        const { selectedItem, itemWidth, labelWidth } = this.state;
+        const { selectedItem, itemWidth, labelWidth, items } = this.state;
 
         return (
             <TouchableOpacity
@@ -668,7 +668,7 @@ export default class RNPickerSelect extends PureComponent {
                                 return (
                                     <View style={{width: tWidth, flexDirection: 'row', justifyContent: 'center'}}>
                                         <View style={{width: iWidth}}>
-                                            <Picker
+                                            {/* <Picker
                                                 style={[
                                                     Icon ? { backgroundColor: 'transparent' } : {}, // to hide native icon
                                                     defaultStyles.headlessAndroidPicker,
@@ -681,7 +681,7 @@ export default class RNPickerSelect extends PureComponent {
                                                 {...pickerProps}
                                             >
                                                 {this.renderPickerItems(wheelIndex)}
-                                            </Picker>
+                                            </Picker> */}
                                         </View>
                                         <View style={{width: lWidth}}>
                                             {this.renderPickerLabel(wheelIndex)}
@@ -697,13 +697,13 @@ export default class RNPickerSelect extends PureComponent {
     }
 
     renderAndroidNativePickerStyle() {
-        const { disabled, Icon, style, pickerProps } = this.props;
-        const { selectedItem, itemWidth, labelWidth } = this.state;
+        const { disabled, Icon, style, pickerProps, itemWidth } = this.props;
+        const { selectedItem, labelWidth, items } = this.state;
 
         return (
             <View style={[defaultStyles.viewContainer, style.viewContainer]}>
                 <View style={[{justifyContent: 'center'}]}>
-                    <View style={[{flexDirection: 'row', justifyContent: 'center',paddingLeft: 0}]}>
+                    <View style={[{flexDirection: 'row', justifyContent: 'center',paddingLeft: 10}]}>
                         {items.map((wheel, wheelIndex) => {
                             let iWidth = itemWidth[wheelIndex];
                             if (typeof iWidth === 'string') {
@@ -727,6 +727,7 @@ export default class RNPickerSelect extends PureComponent {
                                             enabled={!disabled}
                                             onValueChange={(value, index) => this.onValueChange(wheelIndex, value, index)}
                                             selectedValue={selectedItem[wheelIndex].value}
+                                            dropdownIconColor='#ffffff'
                                             {...pickerProps}
                                         >
                                             {this.renderPickerItems(wheelIndex)}
